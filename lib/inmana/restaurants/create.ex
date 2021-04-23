@@ -1,0 +1,16 @@
+defmodule Inmana.Restaurants.Create do
+  alias Inmana.{Repo, Restaurant}
+
+  def call(params) do
+    params
+    |> Restaurant.changeset()
+    |> Repo.insert()
+    |> handle_insert()
+  end
+
+  def handle_insert({:ok, %Restaurant{}} = result), do: result
+
+  def handle_insert({:error, changeset}) do
+    {:error, %{result: changeset, status: :bad_request}}
+  end
+end
